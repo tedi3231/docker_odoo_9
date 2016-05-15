@@ -30,7 +30,6 @@ RUN set -x; \
         && apt-get update \
         && apt-get -y install -f --no-install-recommends \
         && rm -rf /var/lib/apt/lists/* odoo.deb
-
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /
 COPY ./openerp-server.conf /etc/odoo/
@@ -48,7 +47,7 @@ EXPOSE 8069 8071
 ENV OPENERP_SERVER /etc/odoo/openerp-server.conf
 
 # Set default user when running the container
-USER odoo
-
+# USER odoo
+RUN apt-get  apt-get install xfonts-wqy
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["openerp-server"]
