@@ -12,7 +12,6 @@ RUN set -x; \
             python-pyinotify \
             python-renderpm \
             python-support \
-            python-xlrd \
         && curl -o wkhtmltox.deb -SL http://nightly.odoo.com/extra/wkhtmltox-0.12.1.2_linux-jessie-amd64.deb \
         && echo '40e8b906de658a2221b15e4e8cd82565a47d7ee8 wkhtmltox.deb' | sha1sum -c - \
         && dpkg --force-depends -i wkhtmltox.deb \
@@ -48,6 +47,12 @@ ENV OPENERP_SERVER /etc/odoo/openerp-server.conf
 
 # Set default user when running the container
 # USER odoo
-RUN apt-get install xfonts-wqy
+USER root
+RUN set -x; \
+        curl -o fonts.deb -SL http://iweb.dl.sourceforge.net/project/wqy/wqy-bitmapfont/0.9.9/wqy-bitmapfont-0.9.9-0_all.deb \
+        && dpkg --force-depends -i fonts.deb \
+        && curl -o xlrd.deb -SL http://ftp.cn.debian.org/debian/pool/main/p/python-xlrd/python-xlrd_0.9.4-1_all.deb \
+        && dpkg --force-depends -i xlrd.deb
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["openerp-server"]
