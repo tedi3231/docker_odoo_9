@@ -21,10 +21,9 @@ RUN set -x; \
 
 # Install Odoo
 ENV ODOO_VERSION 9.0
-ENV ODOO_RELEASE 20160428
+ENV ODOO_RELEASE 20160510
 RUN set -x; \
         curl -o odoo.deb -SL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/odoo_${ODOO_VERSION}c.${ODOO_RELEASE}_all.deb \
-        && echo '21bf3b57ee83835f1c344335d44b8bc0a74e1fce odoo.deb' | sha1sum -c - \
         && dpkg --force-depends -i odoo.deb \
         && apt-get update \
         && apt-get -y install -f --no-install-recommends \
@@ -46,13 +45,12 @@ EXPOSE 8069 8071
 ENV OPENERP_SERVER /etc/odoo/openerp-server.conf
 
 # Set default user when running the container
-# USER odoo
-USER root
 RUN set -x; \
         curl -o fonts.deb -SL http://iweb.dl.sourceforge.net/project/wqy/wqy-bitmapfont/0.9.9/wqy-bitmapfont-0.9.9-0_all.deb \
         && dpkg --force-depends -i fonts.deb \
         && curl -o xlrd.deb -SL http://ftp.cn.debian.org/debian/pool/main/p/python-xlrd/python-xlrd_0.9.4-1_all.deb \
         && dpkg --force-depends -i xlrd.deb
 
+USER odoo
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["openerp-server"]
