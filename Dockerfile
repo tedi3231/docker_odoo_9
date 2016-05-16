@@ -52,5 +52,8 @@ RUN set -x; \
         && dpkg --force-depends -i xlrd.deb
 
 USER odoo
+RUN mkdir ~/.fonts/
+ADD wqy-microhei.ttc ~/.fonts/
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["openerp-server"]
